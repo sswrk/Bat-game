@@ -1,6 +1,9 @@
 #include "Bat.h"
+#include "Observer.h"
+#include "Bonus.h"
 
-Bat::Bat(Texture& texture, const RenderWindow& window, float velocity):velocity(velocity), texture(&texture){
+Bat::Bat(Texture& texture, const RenderWindow& window, float velocity)
+:velocity(velocity), texture(&texture), bonus_passes(0){
 	sprite.setTexture(texture);
 	sprite.setOrigin((Vector2f)(texture.getSize())/2.0f);
 	sprite.setPosition((Vector2f)(window.getSize())/2.0f);
@@ -10,12 +13,15 @@ Bat::Bat(Texture& texture, const RenderWindow& window, float velocity):velocity(
 void Bat::kill(const RenderWindow& window){
 	sprite.setPosition((Vector2f)(window.getSize())/2.0f);
 	sprite.setRotation(0.0f);
+    sprite.setColor(Color(255, 255, 255, 255));
+    bonus_passes=0;
 	vecf*=0.0f;
 	cscore = 0;
+	notify();
 	dead = false;
 }
 
-void Bat::animate(const float time, const RenderWindow& window, vector<Obstacle>& obstacles){
+void Bat::animate(const float time, const RenderWindow& window, vector<Obstacle>& obstacles, Bonus*& bonus){
 	vecf.y+=downf * time * velocity/200.f;
 	sprite.move(vecf*time);
 	sprite.rotate(rotation_velocity*time);
@@ -30,15 +36,36 @@ void Bat::animate(const float time, const RenderWindow& window, vector<Obstacle>
 	box.top = sprite.getPosition().y - (texture->getSize().y / 2.0f);
 
 	for (auto& obstacle : obstacles){
-		if (obstacle.collision(box)) dead = true;
-		if (!obstacle.isPassed() && sprite.getPosition().x > obstacle.getPosition()){
+		if (obstacle.collision(box) && bonus_passes==0) dead = true;
+		if (!obstacle.isPassed() && sprite.getPosition().x > obstacle.getPosition()+30){
 			obstacle.setPassed();
 			cscore++;
+			if(bonus_passes>0){
+			    bonus_passes--;
+			    if(bonus_passes==0)
+			        sprite.setColor(Color(255, 255, 255, 255));
+			}
+			notify();
 		}
+	}
+	if(bonus != nullptr && bonus->collision(box)){
+	    bonus_passes = bonus->getDuration();
+	    sprite.setColor(Color(255, 255, 0, 128));
+	    notifyBonus();
 	}
 }
 
 void Bat::jump(){
     sprite.setRotation(330.0f);
 	vecf.y = jumpf*sqrt(velocity/200.f);
+}
+
+void Bat::notify() {
+    for(int i=0; i<observers.size(); i++)
+        observers[i]->update();
+}
+
+void Bat::notifyBonus(){
+    for(int i=0; i<observers.size(); i++)
+        observers[i]->updateBonus();
 }

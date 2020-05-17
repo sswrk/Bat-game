@@ -6,11 +6,14 @@
 #include "Bat.h"
 #include "Obstacle.h"
 #include "Grass.h"
+#include "Bonus.h"
+#include "Observer.h"
+#include "Misc.h"
 
 using namespace std;
 using namespace sf;
 
-class Gameplay{
+class Gameplay : public Observer{
 private:
     RenderWindow window;
     Clock clock;
@@ -21,8 +24,10 @@ private:
 
     float velocity;
 
+    int bonus_rarity;
+
     Texture bat_texture;
-    Bat * bat;
+    Bat* bat;
     Texture obstacle_texture;
     vector<Obstacle> obstacles;
     Texture grass_texture;
@@ -31,6 +36,8 @@ private:
     Sprite moon;
     Texture background_texture;
     Sprite background;
+    Texture bonus_texture;
+    Bonus * bonus;
 
     Font text_font;
     Text conclusion;
@@ -43,8 +50,19 @@ private:
 
     bool paused = true;
 public:
+    void setScore();
+    void generateBonus();
 	Gameplay(float velocity);
 	void run();
+	void update() override;
+	void updateBonus() override;
+    void loadObjects();
+    void loadTexts();
+    void loadFile();
+
+    void restart();
+    void animateObjects();
+    void drawObjects();
 };
 
 #endif
