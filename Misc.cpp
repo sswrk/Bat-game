@@ -1,6 +1,3 @@
-//
-// Created by szmnw on 26.04.2020.
-//
 #include "Misc.h"
 
 float random(float from, const float to){

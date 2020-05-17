@@ -13,7 +13,7 @@ private:
     Sprite bottom;
     const Texture* texture;
     float velocity;
-    float position_orig;
+    float position_original;
     void draw(RenderTarget& target, RenderStates states) const;
     bool passed = false;
 public:

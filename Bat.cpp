@@ -1,6 +1,5 @@
 #include "Bat.h"
 #include "Observer.h"
-#include "Bonus.h"
 
 Bat::Bat(Texture& texture, const RenderWindow& window, float velocity)
 :velocity(velocity), texture(&texture), bonus_passes(0){
@@ -15,15 +14,15 @@ void Bat::kill(const RenderWindow& window){
 	sprite.setRotation(0.0f);
     sprite.setColor(Color(255, 255, 255, 255));
     bonus_passes=0;
-	vecf*=0.0f;
-	cscore = 0;
+    vector_force*=0.0f;
+    current_score = 0;
 	notify();
 	dead = false;
 }
 
 void Bat::animate(const float time, const RenderWindow& window, vector<Obstacle>& obstacles, Bonus*& bonus){
-	vecf.y+=downf * time * velocity/200.f;
-	sprite.move(vecf*time);
+    vector_force.y+= downforce * time * velocity / 200.f;
+	sprite.move(vector_force * time);
 	sprite.rotate(rotation_velocity*time);
 	
 	if (sprite.getRotation() >= 60.0f && sprite.getRotation() <= 330.0f)
@@ -39,7 +38,7 @@ void Bat::animate(const float time, const RenderWindow& window, vector<Obstacle>
 		if (obstacle.collision(box) && bonus_passes==0) dead = true;
 		if (!obstacle.isPassed() && sprite.getPosition().x > obstacle.getPosition()+30){
 			obstacle.setPassed();
-			cscore++;
+			current_score++;
 			if(bonus_passes>0){
 			    bonus_passes--;
 			    if(bonus_passes==0)
@@ -57,7 +56,7 @@ void Bat::animate(const float time, const RenderWindow& window, vector<Obstacle>
 
 void Bat::jump(){
     sprite.setRotation(330.0f);
-	vecf.y = jumpf*sqrt(velocity/200.f);
+    vector_force.y = jumpforce * sqrt(velocity / 200.f);
 }
 
 void Bat::notify() {

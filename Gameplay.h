@@ -42,9 +42,9 @@ private:
     Font text_font;
     Text conclusion;
     Text menu_text;
-    Text cscore_text;
-    Text hscore_text;
-    int hscore;
+    Text current_score_text;
+    Text high_score_text;
+    int high_score;
     ifstream input_file;
     ofstream output_file;
 

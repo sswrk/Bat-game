@@ -30,11 +30,11 @@ void Gameplay::loadObjects(){
 
 void Gameplay::loadTexts(){
     text_font.loadFromFile("Resources/Font.ttf");
-    cscore_text.setFont(text_font);
-    cscore_text.setPosition(20, 20);
-    cscore_text.setCharacterSize(30);
-    cscore_text.setFillColor(Color::White);
-    cscore_text.setString("Wynik: 0");
+    current_score_text.setFont(text_font);
+    current_score_text.setPosition(20, 20);
+    current_score_text.setCharacterSize(30);
+    current_score_text.setFillColor(Color::White);
+    current_score_text.setString("Wynik: 0");
 
     menu_text.setFont(text_font);
     menu_text.setCharacterSize(30);
@@ -66,13 +66,13 @@ void Gameplay::loadFile(){
         output_file.close();
         output_file.open("score.txt");
     }
-    input_file>>hscore;
+    input_file >> high_score;
     input_file.close();
-    hscore_text.setFont(text_font);
-    hscore_text.setPosition(20, 50);
-    hscore_text.setCharacterSize(24);
-    hscore_text.setFillColor(Color::White);
-    hscore_text.setString("Rekord: " + to_string(hscore));
+    high_score_text.setFont(text_font);
+    high_score_text.setPosition(20, 50);
+    high_score_text.setCharacterSize(24);
+    high_score_text.setFillColor(Color::White);
+    high_score_text.setString("Rekord: " + to_string(high_score));
 }
 
 Gameplay::Gameplay(float velocity) : velocity(velocity), bonus_rarity(7) {
@@ -85,13 +85,13 @@ Gameplay::Gameplay(float velocity) : velocity(velocity), bonus_rarity(7) {
 }
 
 void Gameplay::setScore() {
-    cscore_text.setString("Wynik: " + to_string(bat->getScore()));
-    if(bat->getScore()>hscore){
-        hscore = bat->getScore();
+    current_score_text.setString("Wynik: " + to_string(bat->getScore()));
+    if(bat->getScore() > high_score){
+        high_score = bat->getScore();
         output_file.open("score.txt");
-        output_file<<hscore;
+        output_file << high_score;
         output_file.close();
-        hscore_text.setString("Rekord: " + to_string(hscore));
+        high_score_text.setString("Rekord: " + to_string(high_score));
     }
 }
 
@@ -143,8 +143,8 @@ void Gameplay::drawObjects(){
         window.draw(conclusion);
     }
     else {
-        window.draw(cscore_text);
-        window.draw(hscore_text);
+        window.draw(current_score_text);
+        window.draw(high_score_text);
     }
 }
 
