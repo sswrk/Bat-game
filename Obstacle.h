@@ -12,12 +12,12 @@ private:
     Sprite top;
     Sprite bottom;
     const Texture* texture;
-    float velocity;
+    float* velocity;
     float position_original;
     void draw(RenderTarget& target, RenderStates states) const;
     bool passed = false;
 public:
-	Obstacle(const Texture& texture, const float position, const RenderWindow& window, float velocity);
+	Obstacle(const Texture& texture, const float position, const RenderWindow& window, float* velocity);
 	void animate(const float delta, const RenderWindow& window);
 	inline bool collision(const FloatRect& box) const { return bottom.getGlobalBounds().intersects(box) || top.getGlobalBounds().intersects(box); };
 	inline const float getPosition() const { return bottom.getPosition().x; };

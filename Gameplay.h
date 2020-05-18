@@ -22,7 +22,7 @@ private:
 
     bool lost = false;
 
-    float velocity;
+    float* velocity;
 
     int bonus_rarity;
 
@@ -54,8 +54,8 @@ public:
     void generateBonus();
 	Gameplay(float velocity);
 	void run();
-	void update() override;
-	void updateBonus() override;
+	void updateScore() override;
+	void deleteBonus() override;
     void loadObjects();
     void loadTexts();
     void loadFile();

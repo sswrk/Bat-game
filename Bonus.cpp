@@ -1,6 +1,6 @@
 #include "Bonus.h"
 
-Bonus::Bonus(const Texture& texture, const float position, const RenderWindow& window, float velocity)
+Bonus::Bonus(const Texture& texture, const float position, const RenderWindow& window, float* velocity)
         :velocity(velocity), texture(&texture), duration(3){
     float offset = random(-(float)window.getSize().y+300.0f, (float)window.getSize().y-300.0f);
     sprite.setTexture(texture);
@@ -10,7 +10,7 @@ Bonus::Bonus(const Texture& texture, const float position, const RenderWindow& w
 }
 
 void Bonus::animate(const float delta, const RenderWindow& window){
-    sprite.move(-velocity * delta, 0.0f);
+    sprite.move(-*velocity * delta, 0.0f);
 }
 
 void Bonus::draw(RenderTarget& target, RenderStates states) const{

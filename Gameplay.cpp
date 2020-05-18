@@ -75,7 +75,7 @@ void Gameplay::loadFile(){
     high_score_text.setString("Rekord: " + to_string(high_score));
 }
 
-Gameplay::Gameplay(float velocity) : velocity(velocity), bonus_rarity(7) {
+Gameplay::Gameplay(float velocity) : velocity(&velocity), bonus_rarity(7) {
 	window.create(VideoMode(550, 600), "Bat Game", Style::Close);
 	window.setFramerateLimit(120);
 
@@ -97,8 +97,8 @@ void Gameplay::setScore() {
 
 void Gameplay::generateBonus() {
     if(bonus != nullptr && bonus->notVisibleAnymore())
-        updateBonus();
-    if(bonus == nullptr)
+        deleteBonus();
+    if(bonus == nullptr && !bat->hasBonus())
         bonus = new Bonus(bonus_texture, 875, window, velocity);
 }
 
@@ -113,7 +113,7 @@ void Gameplay::restart(){
     grass.emplace_back(grass_texture, 0.0f, window, velocity);
     grass.emplace_back(grass_texture, 550.0f, window, velocity);
     if(bonus != nullptr)
-        updateBonus();
+        deleteBonus();
     lost = false;
     paused = false;
 }
@@ -173,12 +173,12 @@ void Gameplay::run(){
 	delete bat;
 }
 
-void Gameplay::update() {
+void Gameplay::updateScore() {
     setScore();
     if((int)random(1, 100)%bonus_rarity==0) generateBonus();
 }
 
-void Gameplay::updateBonus(){
+void Gameplay::deleteBonus(){
     delete bonus;
     bonus = nullptr;
 }

@@ -4,17 +4,13 @@
 #include "Bat.h"
 
 class Observer {
-private:
-    Bat* bat;
 public:
-    Observer(Bat* bat):bat(bat){ bat->addObserver(this); }
     Observer()  {}
-    virtual void update() = 0;
-    virtual void updateBonus() = 0;
+    virtual void updateScore() = 0;
+    virtual void deleteBonus() = 0;
 
 protected:
-    void setBat(Bat* bat) { this->bat = bat; bat->addObserver(this); }
-    Bat* getBat() { return bat; }
+    void setBat(Bat* bat) { bat->addObserver(this); }
 };
 
 

@@ -1,6 +1,6 @@
 #include "Obstacle.h"
 
-Obstacle::Obstacle(const Texture& texture, const float position, const RenderWindow& window, float velocity)
+Obstacle::Obstacle(const Texture& texture, const float position, const RenderWindow& window, float* velocity)
 : velocity(velocity), texture(&texture), position_original(1200){
 	float offset = random(-(texture.getSize().y / 3.0f), texture.getSize().y / 3.0f);
 
@@ -15,8 +15,8 @@ Obstacle::Obstacle(const Texture& texture, const float position, const RenderWin
 }
 
 void Obstacle::animate(const float delta, const RenderWindow& window){
-	top.move(-velocity * delta, 0.0f);
-	bottom.move(-velocity * delta, 0.0f);
+	top.move(-*velocity * delta, 0.0f);
+	bottom.move(-*velocity * delta, 0.0f);
 
 	if (top.getPosition().x <= 0){
 		float offset = random(-(texture->getSize().y / 3.0f), texture->getSize().y / 3.0f);

@@ -10,11 +10,11 @@ class Grass : public Drawable{
 private:
     Sprite sprite;
     const Texture* texture;
-    float velocity;
+    float *velocity;
     float position_original;
     void draw(RenderTarget& target, RenderStates states) const;
 public:
-    Grass(const Texture& texture, const float position, const RenderWindow& window, float velocity);
+    Grass(const Texture& texture, const float position, const RenderWindow& window, float* velocity);
     void animate(const float delta, const RenderWindow& window);
 };
 

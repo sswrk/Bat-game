@@ -1,7 +1,7 @@
 #include "Bat.h"
 #include "Observer.h"
 
-Bat::Bat(Texture& texture, const RenderWindow& window, float velocity)
+Bat::Bat(Texture& texture, const RenderWindow& window, float*& velocity)
 :velocity(velocity), texture(&texture), bonus_passes(0){
 	sprite.setTexture(texture);
 	sprite.setOrigin((Vector2f)(texture.getSize())/2.0f);
@@ -13,15 +13,18 @@ void Bat::kill(const RenderWindow& window){
 	sprite.setPosition((Vector2f)(window.getSize())/2.0f);
 	sprite.setRotation(0.0f);
     sprite.setColor(Color(255, 255, 255, 255));
-    bonus_passes=0;
+    if(bonus_passes!=0) {
+        bonus_passes = 0;
+        *velocity/=2;
+    }
     vector_force*=0.0f;
     current_score = 0;
-	notify();
+    notifyScoreChanged();
 	dead = false;
 }
 
 void Bat::animate(const float time, const RenderWindow& window, vector<Obstacle>& obstacles, Bonus*& bonus){
-    vector_force.y+= downforce * time * velocity / 200.f;
+    vector_force.y+= downforce * time * *velocity / 200.f;
 	sprite.move(vector_force * time);
 	sprite.rotate(rotation_velocity*time);
 	
@@ -41,30 +44,31 @@ void Bat::animate(const float time, const RenderWindow& window, vector<Obstacle>
 			current_score++;
 			if(bonus_passes>0){
 			    bonus_passes--;
-			    if(bonus_passes==0)
-			        sprite.setColor(Color(255, 255, 255, 255));
+			    if(bonus_passes==0) {
+                    sprite.setColor(Color(255, 255, 255, 255));
+                    *velocity/=2;
+                }
 			}
-			notify();
+            notifyScoreChanged();
 		}
 	}
 	if(bonus != nullptr && bonus->collision(box)){
 	    bonus_passes = bonus->getDuration();
 	    sprite.setColor(Color(255, 255, 0, 128));
-	    notifyBonus();
+        notifyBonusAcquired();
 	}
 }
 
 void Bat::jump(){
     sprite.setRotation(330.0f);
-    vector_force.y = jumpforce * sqrt(velocity / 200.f);
+    vector_force.y = jumpforce * sqrt(*velocity / 200.f);
 }
 
-void Bat::notify() {
-    for(int i=0; i<observers.size(); i++)
-        observers[i]->update();
+void Bat::notifyScoreChanged() {
+    observer->updateScore();
 }
 
-void Bat::notifyBonus(){
-    for(int i=0; i<observers.size(); i++)
-        observers[i]->updateBonus();
+void Bat::notifyBonusAcquired(){
+    *velocity*=2;
+    observer->deleteBonus();
 }
