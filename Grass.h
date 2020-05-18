@@ -1,5 +1,5 @@
-#ifndef HELICOPTER_GRASS_H
-#define HELICOPTER_GRASS_H
+#ifndef GRASS_H
+#define GRASS_H
 
 #include <SFML/Graphics.hpp>
 
@@ -18,4 +18,4 @@ public:
     void animate(const float delta, const RenderWindow& window);
 };
 
-#endif //HELICOPTER_GRASS_H
+#endif //GRASS_H

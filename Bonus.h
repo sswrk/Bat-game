@@ -1,5 +1,5 @@
-#ifndef HELICOPTER_BONUS_H
-#define HELICOPTER_BONUS_H
+#ifndef BONUS_H
+#define BONUS_H
 
 
 #include <SFML/Graphics.hpp>
@@ -24,4 +24,4 @@ public:
 };
 
 
-#endif //HELICOPTER_BONUS_H
+#endif //BONUS_H

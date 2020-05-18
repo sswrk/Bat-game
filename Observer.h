@@ -1,5 +1,5 @@
-#ifndef HELICOPTER_OBSERVER_H
-#define HELICOPTER_OBSERVER_H
+#ifndef OBSERVER_H
+#define OBSERVER_H
 
 #include "Bat.h"
 
@@ -14,4 +14,4 @@ protected:
 };
 
 
-#endif //HELICOPTER_OBSERVER_H
+#endif //OBSERVER_H
