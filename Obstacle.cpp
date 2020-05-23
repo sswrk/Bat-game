@@ -1,7 +1,8 @@
 #include "Obstacle.h"
 
 Obstacle::Obstacle(const Texture& texture, const float position, const RenderWindow& window, float* velocity)
-: velocity(velocity), texture(&texture), position_original(1200){
+: velocity(velocity), texture(&texture), position_original(3 * objects_distance){
+
 	float offset = random(-(texture.getSize().y / 3.0f), texture.getSize().y / 3.0f);
 
 	top.setTexture(texture);
@@ -11,7 +12,7 @@ Obstacle::Obstacle(const Texture& texture, const float position, const RenderWin
 
 	bottom.setTexture(texture);
 	bottom.setOrigin(static_cast<float>(texture.getSize().x), static_cast<float>(texture.getSize().y / 2.0f));
-	bottom.setPosition(position, static_cast<float>(window.getSize().y) + offset);
+	bottom.setPosition(position, static_cast<float>(window_height) + offset);
 }
 
 void Obstacle::animate(const float delta, const RenderWindow& window){
@@ -21,7 +22,7 @@ void Obstacle::animate(const float delta, const RenderWindow& window){
 	if (top.getPosition().x <= 0){
 		float offset = random(-(texture->getSize().y / 3.0f), texture->getSize().y / 3.0f);
 		top.setPosition(position_original, offset);
-		bottom.setPosition(position_original, static_cast<float>(window.getSize().y) + offset);
+		bottom.setPosition(position_original, static_cast<float>(window_height) + offset);
 		passed = false;
 	}
 }

@@ -1,10 +1,8 @@
 #include "Gameplay.h"
 
-#define velocity 255.f
-
 int main()
 {
-	Gameplay gameplay(velocity);
+	Gameplay gameplay;
 	gameplay.run();
 	return 0;
 }

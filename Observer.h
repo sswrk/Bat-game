@@ -5,7 +5,7 @@
 
 class Observer {
 public:
-    Observer()  {}
+    Observer()  = default;
     virtual void updateScore() = 0;
     virtual void deleteBonus() = 0;
 

@@ -2,7 +2,7 @@
 #define Obstacle_h
 
 #include <SFML/Graphics.hpp>
-#include "Misc.h"
+#include "common.h"
 
 using namespace std;
 using namespace sf;
@@ -14,13 +14,13 @@ private:
     const Texture* texture;
     float* velocity;
     float position_original;
-    void draw(RenderTarget& target, RenderStates states) const;
     bool passed = false;
+    void draw(RenderTarget& target, RenderStates states) const override;
 public:
-	Obstacle(const Texture& texture, const float position, const RenderWindow& window, float* velocity);
-	void animate(const float delta, const RenderWindow& window);
+	Obstacle(const Texture& texture, float position, const RenderWindow& window, float* velocity);
+	void animate(float delta, const RenderWindow& window);
 	inline bool collision(const FloatRect& box) const { return bottom.getGlobalBounds().intersects(box) || top.getGlobalBounds().intersects(box); };
-	inline const float getPosition() const { return bottom.getPosition().x; };
+	inline float getPosition() const { return bottom.getPosition().x; };
 	bool isPassed() { return passed; }
 	void setPassed() { passed = true; }
 };

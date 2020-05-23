@@ -1,40 +1,53 @@
 #ifndef Bat_h
 #define Bat_h
 
+#include <vector>
+#include <cmath>
+
 #include "Obstacle.h"
 #include "Bonus.h"
-#include <vector>
-#include <math.h>
+#include "common.h"
 
 using namespace std;
 using namespace sf;
 
 class Bat : public Drawable{
 private:
-    class Observer* observer;
     Sprite sprite;
-    Vector2f vector_force;
-    FloatRect box;
     Texture* texture;
-    int bonus_passes;
-    bool dead = false;
+    FloatRect box;
+
     float* velocity;
-    float downforce = 1000.0f;
-    float jumpforce =  (-500.0f);
+    Vector2f vector_force;
+    float gravity = 1000.0f;
+    float jump_force =  (-500.0f);
     float rotation_velocity = 60.0f;
+    float min_rotation = 60.0f;
+    float max_rotation = 330.0f;
+
+    class Observer* observer{};
+
+    int bonus_passes;
     int current_score = 0;
-    inline void draw(RenderTarget& target, RenderStates states) const { target.draw(sprite); }
-public:
-	Bat(Texture& texture, const RenderWindow& window, float*& velocity);
-    inline void addObserver(Observer* observer) { this->observer = observer; }
-    void animate(const float delta, const RenderWindow& window, vector<Obstacle>& obstacles, Bonus*& bonus);
-    void jump();
-    inline int getScore() const { return current_score; }
-    inline bool hasBonus() { return bonus_passes!=0; }
-	void kill(const RenderWindow& window);
-    bool isDead() { return dead; }
+
+    bool dead = false;
+
+    inline void draw(RenderTarget& target, RenderStates states) const override { target.draw(sprite); }
+    void checkIfBonusAcquired(Bonus* bonus);
+    void checkIfObstaclePassed(vector<Obstacle>& obstacles);
+    void checkCollisions(vector<Obstacle>& obstacles, const RenderWindow& window);
     void notifyScoreChanged();
     void notifyBonusAcquired();
+
+public:
+	Bat(Texture& texture, const RenderWindow& window, float* velocity);
+    void animate(float delta, const RenderWindow& window, vector<Obstacle>& obstacles, Bonus*& bonus);
+    void jump();
+    void reset(const RenderWindow& window);
+    inline void addObserver(Observer* observer) { this->observer = observer; }
+    inline int getScore() const { return current_score; }
+    inline bool hasBonus() { return bonus_passes!=0; }
+    inline bool isDead() { return dead; }
 };
 
 #endif

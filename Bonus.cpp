@@ -1,8 +1,9 @@
 #include "Bonus.h"
 
 Bonus::Bonus(const Texture& texture, const float position, const RenderWindow& window, float* velocity)
-        :velocity(velocity), texture(&texture), duration(3){
-    float offset = random(-(float)window.getSize().y+300.0f, (float)window.getSize().y-300.0f);
+: velocity(velocity), texture(&texture), duration(3){
+
+    float offset = random(-window_height/2.0f, window_height/2.0f);
     sprite.setTexture(texture);
     sprite.setOrigin(static_cast<float>(texture.getSize().x), window.getSize().y/2);
     sprite.setScale(1.0f, -1.0f);
