@@ -1,4 +1,6 @@
 # bat-game
-sfml game
+A gloomier clone of "Flappy Bird" :)
 
-<img src="/previev/bat.gif"/>
+Made with SFML library for C++
+
+<img src="/preview/bat.gif"/>
